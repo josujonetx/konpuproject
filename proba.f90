@@ -1,3 +1,3 @@
 program proba
-print*, "barazkia"
+print*, "barazkia", "hello world"
 end program proba
