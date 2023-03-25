@@ -77,8 +77,8 @@ contains
     integer, intent(in)::i,j
     integer:: sinu
     
-    sinu=(-1)**(floor((i-1)/50)*floor((j-1)/50))
-    
+    sinu=(-1)**((i-1)/50)*(-1)**((j-1)/50)
+
     end function sinu
     
     function sig(i,j) !eskubi ala ezker
