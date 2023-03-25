@@ -69,7 +69,7 @@ x=x+v*dt+E/2*dt**2
 
 K=sqrt(sum(v*v))/100/2
 
-
+enddo
 !__________________
 contains
     function sinu(i,j) !potentziala + edo - izango den
@@ -83,7 +83,7 @@ contains
     
     function sig(i,j) !eskubi ala ezker
     
-    integer, inten(in)::i,j
+    integer, intent(in)::i,j
     integer:: sig
     
     if (i==j) then
@@ -96,4 +96,4 @@ contains
     
     end function sig
     
-end program plasma
+end program sarrera
