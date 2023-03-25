@@ -55,7 +55,7 @@ write(unit=*, fmt=*) sqrt((U0-V0)/50),"=", sqrt(sum(v*v))
 !----------------------------------------------------------------------------------------
 
 !eboluzio temporala 0.01-eko jauziez kalkulatua
-dt=0.01 
+dt=min(
 do l=1,600
 !Eremu elektrikoa::
 do j=1,100
@@ -72,12 +72,14 @@ x=x+v*dt+E/2*dt**2
 do i=1,100
     if (x(i)<0) then
         x(i)=-x(i)
+        v(i)=-v(i)
     else if (x(i)>1) then
         x(i)=1-(x(i)-1)
+        v(i)=-v(i)
     end if
 end do
 
-write(unit=111, fmt=*) sum(v*v)/100/2
+write(unit=111, fmt=*) dt*l, sum(v*v)/100/2
 
 enddo
 !__________________
