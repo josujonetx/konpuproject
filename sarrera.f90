@@ -11,9 +11,13 @@ open(unit=111, file="K(t)", status="replace", action="write")
 !sistemaren energia
 U0=10.0
 
+potentziala: do
 !Potentzialaren kalkuloa:
-potentziala: call random_number(x) !100 posizio aleaorio
+
+call random_number(x) !100 posizio aleaorio
+
 V0=0.0_dp
+
 do i=1,100
 do j=1,100
     V0=V0-sinu(i,j)*abs(x(i)-x(j))
@@ -27,10 +31,11 @@ V0=V0/2
 
 !potentzialak ezin duenez sistemaren energia gainditu prozesua errepikatuko da:
 
-if (V0>U0) then
+if (V0<U0) then
     exit potentziala
 end if
 
+end do potentziala
 ! Partiukula ez erlatibistak (E=1/2·m·v^2) eta eta denek m=1 onartuko dugu. 
 ! Hortaz abiaduraren bataz besteko kuadratikoa-ren erroa:
 
