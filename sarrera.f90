@@ -3,8 +3,8 @@ program sarrera
 use tipoak
 
 real(kind=dp), dimension(100):: x, r, v, E !100 partikula izango direlako 
-integer:: i, j 
-Real(kind=dp):: V0,U0,vm,w, dt
+integer:: i, j,l
+Real(kind=dp):: V0,U0,vm,w, dt,k
 
 open(unit=111, file="K(t)", status="replace", action="write")
 
@@ -56,7 +56,7 @@ write(unit=*, fmt=*) (U0-V0)/50,"=", sqrt(sum(v*v))
 
 !eboluzio temporala 0.01-eko jauziez kalkulatua
 dt=0.01 
-do i=1,600
+do l=1,600
 !Eremu elektrikoa::
 do j=1,100
     E(j)=0.0_dp
