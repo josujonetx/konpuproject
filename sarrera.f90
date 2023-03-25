@@ -6,7 +6,7 @@ real(kind=dp), dimension(100):: x, r, v, E !100 partikula izango direlako
 integer:: i, j,l
 Real(kind=dp):: V0,U0,vm,w, dt,k
 
-open(unit=111, file="K(t)", status="replace", action="write")
+open(unit=111, file="K(t).dat", status="replace", action="write")
 
 !sistemaren energia
 U0=10.0
