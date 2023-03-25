@@ -6,7 +6,7 @@ real(kind=dp), dimension(100):: x, r, v, E !100 partikula izango direlako
 integer:: i, j,l
 Real(kind=dp):: V0,U0,vm,w, dt,k
 
-open(unit=111, file="K(t).dat", status="replace", action="write")
+open(unit=111, file="K.dat", status="replace", action="write")
 
 !sistemaren energia
 U0=10.0
@@ -67,7 +67,17 @@ enddo
 v=v+E*dt
 x=x+v*dt+E/2*dt**2
 
-K=sqrt(sum(v*v))/100/2
+!talka elastikoa
+
+do i=1,100
+    if (x(i)<0) then
+        x(i)=-x(i)
+    else if (x(i)>1) then
+        x(i)=1-(x(i)-1)
+    end if
+end do
+
+write(unit=111, fmt=*) sum(v*v)/100/2
 
 enddo
 !__________________
@@ -90,7 +100,7 @@ contains
         sig=0
     else if ((x(j)-x(i))>0) then
         sig=1
-    else: 
+    else 
         sig=-1
     end if
     
