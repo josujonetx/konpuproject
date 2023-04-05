@@ -21,7 +21,7 @@ V0=0.0_dp
 
 do i=1,100
 do j=1,100
-    V0=V0-sinu(i,j)
+    V0=V0-sinu(i,j)*abs(x(i)-x(j))
 enddo
 enddo
 
@@ -147,8 +147,8 @@ contains
             
              ! 100. partikula eskuin paretarekin talka 
              
-        t1=(-v(100)-sqrt(v(100)**2-2*a(100)*(1.0-x(100))))/a(100)
-        t2=(-v(100)+sqrt(v(100)**2-2*a(100)*(1.0-x(100))))/a(100)
+        t1=(-v(100)-sqrt(v(100)**2-2*a(100)*(-1.0+x(100))))/a(100)
+        t2=(-v(100)+sqrt(v(100)**2-2*a(100)*(-1.0+x(100))))/a(100)
         if ((t1<0.0_dp) .and. (t2>0.0_dp)) then
            dt=t2
            l=100
