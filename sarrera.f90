@@ -55,7 +55,7 @@ write(unit=*, fmt=*) sqrt((U0-V0)/50),"=", sqrt(sum(v*v))
 !----------------------------------------------------------------------------------------
 
 !eboluzio temporala 0.01-eko jauziez kalkulatua
-dt=min(
+dt=karak(x,v)
 do l=1,600
 !Eremu elektrikoa::
 do j=1,100
@@ -107,5 +107,20 @@ contains
     end if
     
     end function sig
+    
+    function karak(x,v,E)
+        
+        real(kind=dp), dimension(:), intent(in):: x, E, v
+        real(kind=dp), dimension(101):t
+        integer:: i
+        real(kind=dp):: a,b,c,t1,t2
+        do i=1,99
+            a=x(i+1)-x(i)
+            b=v(i+1)-v(i)
+            c=E(i+1)-E(i)
+            t1=(-b+sqrt(b**2-4*a*c))/2a
+            t2=
+        enddo
+    end function karak
     
 end program sarrera
