@@ -4,7 +4,7 @@ use tipoak
 
 real(kind=dp), dimension(100):: x, r, v, a !100 partikula izango direlako 
 integer, dimension(100):: c !kargen balioak
-integer:: i, j,l
+integer:: i, j,l,k
 Real(kind=dp):: V0,U0,vm,w, dt, m,t
 
 open(unit=111, file="K.dat", status="replace", action="write")
@@ -117,8 +117,8 @@ do j=1,10000
     enddo
     V0=0.0_dp
     do i=1,100
-    do j=1,100
-        V0=V0-c(i)*c(j)*abs(x(i)-x(j))
+    do k=1,100
+        V0=V0-c(i)*c(k)*abs(x(i)-x(k))
     enddo
     enddo
     V0=V0/2
