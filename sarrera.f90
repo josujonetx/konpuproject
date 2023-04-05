@@ -163,7 +163,7 @@ contains
             c=x(i+1)-x(i)
             b=v(i+1)-v(i)
             d=(a(i+1)-a(i))/2
-            t1=(-b+sqrt(b**2-4*d*c))/2/d
+            t1=(-b-sqrt(b**2-4*d*c))/2/d
             t2=(-b+sqrt(b**2-4*d*c))/2/d
             if ((t1<0.0_dp) .and. (t2>0.0_dp)) then
                dt=t2
