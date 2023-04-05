@@ -80,7 +80,6 @@ do i=1,100
     do j=i+1,100
         a(i)=a(i)-c(i)*c(j)
     enddo
-    write(unit=*, fmt=*) a(i)
 enddo
 
 !dinamika
@@ -111,13 +110,21 @@ do j=1,10000
     end if
     t=t+dt
     write(unit=111, fmt=*) t, sum(v*v)/100/2
+    
+    !txekeoa??----------------------------------------------------    
+    do i=1,100
+        write(unit=*, fmt=*) "Vmax=", max(V), "Xmax", X(100)
+    enddo
     V0=0.0_dp
     do i=1,100
     do j=1,100
         V0=V0-c(i)*c(j)*abs(x(i)-x(j))
     enddo
     enddo
+    V0=V0/2
     write(unit=*, fmt=*) sqrt((U0-V0)/50),"=", sqrt(sum(v*v))
+    
+    !----------------------------------------------------
     
 enddo
 
