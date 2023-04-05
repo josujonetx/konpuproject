@@ -5,7 +5,7 @@ use tipoak
 real(kind=dp), dimension(100):: x, r, v, a !100 partikula izango direlako 
 integer, dimension(100):: c !kargen balioak
 integer:: i, j,l
-Real(kind=dp):: V0,U0,vm,w, dt, m
+Real(kind=dp):: V0,U0,vm,w, dt, m,t
 
 open(unit=111, file="K.dat", status="replace", action="write")
 
@@ -103,7 +103,8 @@ do j=1,10000
         a(i)=a(i)+2*c(l)*c(l+1)
         a(i+1)=a(i+1)-2*c(l)*c(l+1)
     end if
-    write(unit=111, fmt=*) dt*j, sum(v*v)/100/2
+    t=t+dt
+    write(unit=111, fmt=*) t, sum(v*v)/100/2
 enddo
 
 contains
@@ -119,12 +120,12 @@ contains
     subroutine karak(x,v,a,dt,l) !Denbora karakterestikoa
 
         real(kind=dp), dimension(:), intent(in):: x, a, v
-        real(kind=dp), dimension(99)::m
         integer:: i,j
         real(kind=dp):: d,b,c,t1,t2
         real(kind=dp), intent(inout)::dt
         integer, intent(inout):: l
- ! 1. partikula ezker paretarekin talka 
+        
+            ! 1. partikula ezker paretarekin talka 
 
         t1=(-x(1)-sqrt(v(1)**2-2*a(1)*x(1)))/a(1)
         t2=(-x(1)+sqrt(v(1)**2-2*a(1)*x(1)))/a(1)
@@ -136,22 +137,11 @@ contains
            dt=t1
            l=0
         end if
-
-        !
-        t1=(-x(1)-sqrt(v(1)**2-2*a(1)*x(1)))/a(1)
-        t2=(-x(1)+sqrt(v(1)**2-2*a(1)*x(1)))/a(1)
-
-        if ((t1<0.0_dp) .and. (t2>0.0_dp)) then
-
-           dt=t2
-           l=0
-        else if (t1>0.0_dp) then
-           dt=t1
-           l=0
-        end if
-
-        t1=(1-x(1)-sqrt(v(1)**2-2*a(1)*(1-x(1))))/a(1)
-        t2=(1-x(1)+sqrt(v(1)**2-2*a(1)*(1-x(1))))/a(1)
+            
+             ! 100. partikula eskuin paretarekin talka 
+             
+        t1=(1.0-x(1)-sqrt(v(1)**2-2*a(1)*(1.0-x(1))))/a(1)
+        t2=(1.0-x(1)+sqrt(v(1)**2-2*a(1)*(1.0-x(1))))/a(1)
         if ((t1<0.0_dp) .and. (t2>0.0_dp)) then
            dt=t2
            l=100
@@ -166,13 +156,13 @@ contains
             d=(a(i+1)-a(i))/2
             t1=(-b+sqrt(b**2-4*d*c))/2/d
             t2=(-b+sqrt(b**2-4*d*c))/2/d
-        if ((t1<0.0_dp) .and. (t2>0.0_dp)) then
-           dt=t2
-           l=i
-        else if (t1>0.0_dp) then
-           dt=t1
-           l=i
-        end if
+            if ((t1<0.0_dp) .and. (t2>0.0_dp)) then
+               dt=t2
+               l=i
+            else if (t1>0.0_dp) then
+               dt=t1
+               l=i
+            end if
         enddo
     end subroutine karak
 
