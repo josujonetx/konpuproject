@@ -99,7 +99,9 @@ do j=1,10000
         m=v(l)
         v(l)=v(l+1)
         v(l+1)=m
-
+        m=a(i)
+        a(i)=a(i)+2*c(l)*c(l+1)
+        a(i+1)=a(i+1)-2*c(l)*c(l+1)
     end if
     write(unit=111, fmt=*) dt*j, sum(v*v)/100/2
 enddo
