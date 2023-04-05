@@ -22,7 +22,7 @@ V0=0.0_dp
 
 do i=1,100
 do j=1,100
-    V0=V0-sinu(i,j)*abs(x(i)-x(j))
+    V0=V0-sinu(i,j)
 enddo
 enddo
 
