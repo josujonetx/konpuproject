@@ -17,7 +17,6 @@ potentziala: do
 
 call random_number(x) !100 posizio aleaorio [0,1)
 
-
 V0=0.0_dp
 
 do i=1,100
@@ -89,10 +88,10 @@ do j=1,10000
         v(i)=v(i)+a(i)*dt
     enddo
     if (l==0) then
-        v(1)=-v(1)
+        v(1)=-v(1) !ezkerrako paretaren aurkako talka
     else if (l==100) then
-        v(100)=-V(100)
-    else
+        v(100)=-V(100) !eskuineko paretaren aurkako talka
+    else !gurutzatzea
         m=x(l)
         x(l)=x(l+1)
         x(l+1)=m
@@ -102,9 +101,13 @@ do j=1,10000
         m=a(i)
         a(i)=a(i)+2*c(l)*c(l+1)
         a(i+1)=a(i+1)-2*c(l)*c(l+1)
+        m=c(i)
+        c(i)=c(i+1)
+        c(i+1)=c(i)
     end if
     t=t+dt
     write(unit=111, fmt=*) t, sum(v*v)/100/2
+    
 enddo
 
 contains
@@ -149,7 +152,9 @@ contains
            dt=t1
            l=100
         end if
-
+            
+            !Partikulak elkar gurutzatu
+            
         do i=1,100
             c=x(i+1)-x(i)
             b=v(i+1)-v(i)
