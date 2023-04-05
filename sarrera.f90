@@ -113,7 +113,7 @@ do j=1,10000
     
     !txekeoa??----------------------------------------------------    
     do i=1,100
-        write(unit=*, fmt=*) "Vmax=", max(V), "Xmax", X(100)
+        write(unit=*, fmt=*) "Xmax", X(100)
     enddo
     V0=0.0_dp
     do i=1,100
@@ -179,7 +179,7 @@ contains
             d=(a(i+1)-a(i))/2
             t1=(-b-sqrt(b**2-4*d*c))/2/d
             t2=(-b+sqrt(b**2-4*d*c))/2/d
-            if ((t1<0.0_dp) .and. (t2>0.0_dp) and. (dt>t2) ) then
+            if ((t1<0.0_dp) .and. (t2>0.0_dp) .and. (dt>t2) ) then
                dt=t2
                l=i
             else if (t1>0.0_dp .and. (dt>t1)) then
