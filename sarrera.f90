@@ -63,7 +63,7 @@ do i=1,99
             x(i)=v(j)
             v(j)=m
             if (j<=50) then
-                c(i)=1   !ordena aldatu baina lehen 50-ak + eta besteak - dira
+                c(i)=1   !kargen balioa ordena aldatzean ez baitauzkagu hasierako 50na + eta  - 
             else
                 c(i)=-1
             end if
@@ -111,6 +111,13 @@ do j=1,10000
     end if
     t=t+dt
     write(unit=111, fmt=*) t, sum(v*v)/100/2
+    V0=0.0_dp
+    do i=1,100
+    do j=1,100
+        V0=V0-c(i)*c(j)*abs(x(i)-x(j))
+    enddo
+    enddo
+    write(unit=*, fmt=*) sqrt((U0-V0)/50),"=", sqrt(sum(v*v))
     
 enddo
 
