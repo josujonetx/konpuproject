@@ -80,11 +80,15 @@ do i=1,100
     do j=i+1,100
         a(i)=a(i)-c(i)*c(j)
     enddo
+    write(unit=*, fmt=*) a(i)
 enddo
+
+!dinamika
+
 do j=1,10000
-    call karak(x,v,a,dt, l)
+    call karak(x,v,a,dt, l) !Denbora karakteristikoa (dt) eta prozesua (l)
     do i=1,100
-        x(i)=x(i)+v(i)*dt+a(i)/2*dt**2
+        x(i)=x(i)+v(i)*dt+a(i)/2*dt**2   ! Eboluzio denborala
         v(i)=v(i)+a(i)*dt
     enddo
     if (l==0) then
@@ -103,7 +107,7 @@ do j=1,10000
         a(i+1)=a(i+1)-2*c(l)*c(l+1)
         m=c(i)
         c(i)=c(i+1)
-        c(i+1)=c(i)
+        c(i+1)=m
     end if
     t=t+dt
     write(unit=111, fmt=*) t, sum(v*v)/100/2
