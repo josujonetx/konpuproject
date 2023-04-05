@@ -127,8 +127,8 @@ contains
         
             ! 1. partikula ezker paretarekin talka 
 
-        t1=(-x(1)-sqrt(v(1)**2-2*a(1)*x(1)))/a(1)
-        t2=(-x(1)+sqrt(v(1)**2-2*a(1)*x(1)))/a(1)
+        t1=(-v(1)-sqrt(v(1)**2-2*a(1)*x(1)))/a(1)
+        t2=(-v(1)+sqrt(v(1)**2-2*a(1)*x(1)))/a(1)
 
         if ((t1<0.0_dp) .and. (t2>0.0_dp)) then
            dt=t2
@@ -140,8 +140,8 @@ contains
             
              ! 100. partikula eskuin paretarekin talka 
              
-        t1=(1.0-x(1)-sqrt(v(1)**2-2*a(1)*(1.0-x(1))))/a(1)
-        t2=(1.0-x(1)+sqrt(v(1)**2-2*a(1)*(1.0-x(1))))/a(1)
+        t1=(v(100)-sqrt(v(100)**2-2*a(100)*(1.0-x(100))))/a(100)
+        t2=(v(100)+sqrt(v(100)**2-2*a(100)*(1.0-x(100))))/a(100)
         if ((t1<0.0_dp) .and. (t2>0.0_dp)) then
            dt=t2
            l=100
