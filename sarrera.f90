@@ -113,7 +113,7 @@ contains
     integer, intent(in)::i,j
     integer:: sinu
 
-    sinu=(-1)**(real(i-1)/50)*(-1)**(real(j-1)/50)
+    sinu=(-1)**((i-1)/50)*(-1)**((j-1)/50)
 
     end function sinu
 
