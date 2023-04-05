@@ -10,7 +10,7 @@ Real(kind=dp):: V0,U0,vm,w, dt, m,t
 open(unit=111, file="K.dat", status="replace", action="write")
 
 !sistemaren energia
-U0=10.0
+U0=10.0_dp
 
 potentziala: do
 !Potentzialaren kalkuloa:
@@ -64,7 +64,7 @@ do i=1,99
             x(i)=v(j)
             v(j)=m
             if (j<=50) then
-                c(i)=1
+                c(i)=1   !ordena aldatu baina lehen 50-ak + eta besteak - dira
             else
                 c(i)=-1
             end if
@@ -113,7 +113,7 @@ contains
     integer, intent(in)::i,j
     integer:: sinu
 
-    sinu=(-1)**((i-1)/50)*(-1)**((j-1)/50)
+    sinu=(-1)**(real(i-1)/50)*(-1)**(real(j-1)/50)
 
     end function sinu
 
