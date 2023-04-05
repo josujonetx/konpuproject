@@ -163,10 +163,10 @@ contains
              
         t1=(-v(100)-sqrt(v(100)**2-2*a(100)*(-1.0+x(100))))/a(100)
         t2=(-v(100)+sqrt(v(100)**2-2*a(100)*(-1.0+x(100))))/a(100)
-        if ((t1<0.0_dp) .and. (t2>0.0_dp)) then
+        if ((t1<0.0_dp) .and. (t2>0.0_dp) .and. (dt>t2)) then
            dt=t2
            l=100
-        else if (t1>0.0_dp) then
+        else if (t1>0.0_dp .and. (dt>t1) ) then
            dt=t1
            l=100
         end if
@@ -179,10 +179,10 @@ contains
             d=(a(i+1)-a(i))/2
             t1=(-b-sqrt(b**2-4*d*c))/2/d
             t2=(-b+sqrt(b**2-4*d*c))/2/d
-            if ((t1<0.0_dp) .and. (t2>0.0_dp)) then
+            if ((t1<0.0_dp) .and. (t2>0.0_dp) and. (dt>t2) ) then
                dt=t2
                l=i
-            else if (t1>0.0_dp) then
+            else if (t1>0.0_dp .and. (dt>t1)) then
                dt=t1
                l=i
             end if
