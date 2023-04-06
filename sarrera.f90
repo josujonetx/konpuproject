@@ -19,7 +19,7 @@ call random_number(x) !100 posizio aleaorio [0,1)
 
 do i=1,50 !kargen balioak 1/-1
     c(i)=1
-    c(i+1)=-1
+    c(i+50)=-1
 enddo
 
 V0=0.0_dp
