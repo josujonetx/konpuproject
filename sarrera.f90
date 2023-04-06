@@ -17,11 +17,16 @@ potentziala: do
 
 call random_number(x) !100 posizio aleaorio [0,1)
 
+do i=1,50 !kargen balioak 1/-1
+    c(i)=1
+    c(i+1)=-1
+enddo
+
 V0=0.0_dp
 
 do i=1,100
 do j=1,100
-    V0=V0-sinu(i,j)*abs(x(i)-x(j))
+    V0=V0-c(i)*c(j)*abs(x(i)-x(j))
 enddo
 enddo
 
@@ -44,7 +49,7 @@ vm=sqrt((U0-V0)/50)
 
 call random_number(r) !abiaduren aleatoriotasuna bermatzeko r-[0,1)
 
-r=2*r-1 ! r
+r=2*r-1 ! r->(-1,1)
 
 w=sqrt(sum(r*r))
 
@@ -53,7 +58,7 @@ v=r*vm/w/10 !100 elementuko abiaduren lista bat
 !------------------------------------------------------------------------------>
 !Txekeoa::
 
-write(unit=*, fmt=*) sqrt((U0-V0)/50),"=", sqrt(sum(v*v))
+write(unit=*, fmt=*) sqrt((U0-V0)/50),"=", 100*sqrt(sum(v*v))
 
 !------------------------------------------------------------------------------>
 
@@ -64,12 +69,10 @@ do i=1,99
             m=x(i)
             x(i)=x(j)
             x(j)=m
-            if (j<=50) then
-                c(i)=1   !kargen balioa ordena aldatzean ez baitauzkagu hasierako 50na + eta  - 
-            else
-                c(i)=-1
-            end if
-        end if
+            m=c(i)
+            c(i)=c(j)
+            c(j)=m
+         end if
     end do
 end do
 
@@ -124,22 +127,13 @@ do j=1,10000
     enddo
     enddo
     V0=V0/2
-    write(unit=*, fmt=*) sqrt((U0-V0)/50),"=", sqrt(sum(v*v))
+    write(unit=*, fmt=*) sqrt((U0-V0)/50),"=", 100*sqrt(sum(v*v))
     
     !----------------------------------------------------
     
 enddo
 
 contains
-    function sinu(i,j) !potentziala + edo - izango den
-
-    integer, intent(in)::i,j
-    integer:: sinu
-
-    sinu=(-1)**((i-1)/50)*(-1)**((j-1)/50)
-
-    end function sinu
-
     subroutine karak(x,v,a,dt,l) !Denbora karakterestikoa
 
         real(kind=dp), dimension(:), intent(in):: x, a, v
