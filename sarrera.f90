@@ -100,12 +100,12 @@ do j=1,10000
         m=v(l)
         v(l)=v(l+1)
         v(l+1)=m
-        m=a(i)
-        a(i)=a(i)+2*c(l)*c(l+1)
-        a(i+1)=a(i+1)-2*c(l)*c(l+1)
-        m=c(i)
-        c(i)=c(i+1)
-        c(i+1)=m
+        m=a(l)
+        a(l+1)=a(l)+2*c(l)*c(l+1)
+        a(l)=m-2*c(l)*c(l+1)
+        m=c(l)
+        c(l)=c(l+1)
+        c(l+1)=m
     end if
     t=t+dt
     write(unit=111, fmt=*) t, sum(v*v)/2, 10.0
