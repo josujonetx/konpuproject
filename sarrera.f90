@@ -117,9 +117,8 @@ do j=1,10000
     write(unit=111, fmt=*) t, sum(v*v)/100/2
     
     !txekeoa??----------------------------------------------------    
-    do i=1,100
-        write(unit=*, fmt=*) "Xmax", X(100)
-    enddo
+    write(unit=*, fmt=*) "Xmax", X(100)
+    
     V0=0.0_dp
     do i=1,100
     do k=1,100
@@ -159,10 +158,11 @@ contains
              
         t1=(-v(100)-sqrt(v(100)**2-2*a(100)*(-1.0+x(100))))/a(100)
         t2=(-v(100)+sqrt(v(100)**2-2*a(100)*(-1.0+x(100))))/a(100)
+        
         if ((t1<0.0_dp) .and. (t2>0.0_dp) .and. (dt>t2)) then
            dt=t2
            l=100
-        else if (t1>0.0_dp .and. (dt>t1) ) then
+        else if ((t1>0.0_dp) .and. (dt>t1) ) then
            dt=t1
            l=100
         end if
@@ -178,7 +178,7 @@ contains
             if ((t1<0.0_dp) .and. (t2>0.0_dp) .and. (dt>t2) ) then
                dt=t2
                l=i
-            else if (t1>0.0_dp .and. (dt>t1)) then
+            else if ((t1>0.0_dp) .and. (dt>t1)) then
                dt=t1
                l=i
             end if
