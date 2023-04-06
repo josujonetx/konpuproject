@@ -163,7 +163,7 @@ contains
             
             !Partikulak elkar gurutzatu
             
-        do i=1,100
+        do i=1,99
             c=x(i+1)-x(i)
             b=v(i+1)-v(i)
             d=(a(i+1)-a(i))/2
@@ -172,7 +172,7 @@ contains
             if ((t1<0.0_dp) .and. (t2>0.0_dp) .and. (dt>t2)) then
                dt=t2
                l=i
-            else if ((t1>0.0_dp) .and. (t2<0.0_dp) .and. (dt>t1) ) then
+            else if ((t1>0.0_dp) .and. (t2<0.0_dp) .and. (dt>t1)) then
                dt=t1
                l=i
             else if ((t1>0.0_dp) .and. (t2>0.0_dp) .and. (t1<t2) .and. (dt>t1)) then
