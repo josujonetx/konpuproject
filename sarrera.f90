@@ -38,6 +38,13 @@ V0=V0/2
 !potentzialak ezin duenez sistemaren energia gainditu prozesua errepikatuko da:
 
 if (V0<U0) then
+
+    ! txekeoa-----------------------------------------------------------------------------
+    
+    write(unit=*, fmt=*) "V0=", V0, "eta U=", U0
+    
+    !-------------------------------------------------------------------------------------
+    
     exit potentziala
 end if
 
