@@ -90,7 +90,7 @@ enddo
 !dinamika
 
 do j=1,10000
-    call karak(x,v,a,dt, l) !Denbora karakteristikoa (dt) eta prozesua (l)
+    call karak(x,v,a,dt,l) !Denbora karakteristikoa (dt) eta prozesua (l)
     do i=1,100
         x(i)=x(i)+v(i)*dt+a(i)/2*dt**2   ! Eboluzio denborala
         v(i)=v(i)+a(i)*dt
