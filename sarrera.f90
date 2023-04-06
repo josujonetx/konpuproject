@@ -39,12 +39,6 @@ V0=V0/2
 
 if (V0<U0) then
 
-    ! txekeoa-----------------------------------------------------------------------------
-    
-    write(unit=*, fmt=*) "V0=", V0, "eta U=", U0
-    
-    !-------------------------------------------------------------------------------------
-    
     exit potentziala
 end if
 
@@ -61,13 +55,6 @@ r=2*r-1 ! r->(-1,1)
 w=sqrt(sum(r*r))
 
 v=r*vm/w*10 !100 elementuko abiaduren lista bat
-
-!------------------------------------------------------------------------------>
-!Txekeoa::
-
-write(unit=*, fmt=*) sqrt((U0-V0)/50),"=", sqrt(sum(v*v))/10
-
-!------------------------------------------------------------------------------>
 
 !x lista ordenatuko dugu errazagoa izan dadin ondorengo kalkuloa
 do i=1,99
@@ -121,21 +108,7 @@ do j=1,10000
         c(i+1)=m
     end if
     t=t+dt
-    write(unit=111, fmt=*) t, sum(v*v)/100/2
-    
-    !txekeoa??----------------------------------------------------    
-    write(unit=*, fmt=*) "Xmax", X(100)
-    
-    V0=0.0_dp
-    do i=1,100
-    do k=1,100
-        V0=V0-c(i)*c(k)*abs(x(i)-x(k))
-    enddo
-    enddo
-    V0=V0/2
-    write(unit=*, fmt=*) sqrt((U0-V0)/50),"=", sqrt(sum(v*v))/10
-    
-    !----------------------------------------------------
+    write(unit=111, fmt=*) t, sum(v*v)/2, 10.0
     
 enddo
 
@@ -148,15 +121,23 @@ contains
         real(kind=dp), intent(inout)::dt
         integer, intent(inout):: l
         
+        dt=100.0
+        
             ! 1. partikula ezker paretarekin talka 
-
+            
         t1=(-v(1)-sqrt(v(1)**2-2*a(1)*x(1)))/a(1)
         t2=(-v(1)+sqrt(v(1)**2-2*a(1)*x(1)))/a(1)
 
         if ((t1<0.0_dp) .and. (t2>0.0_dp)) then
            dt=t2
            l=0
-        else if (t1>0.0_dp) then
+        else if ((t1>0.0_dp) .and. (t2<0.0_dp)) then
+            dt=t1
+            l=0
+        else if ((t1>0.0_dp) .and. (t2>0.0_dp) .and. (t1<t2)) then
+           dt=t1
+           l=0
+        else if ((t1>0.0_dp) .and. (t2>0.0_dp) .and. (t1>t2)) then
            dt=t1
            l=0
         end if
@@ -169,8 +150,14 @@ contains
         if ((t1<0.0_dp) .and. (t2>0.0_dp) .and. (dt>t2)) then
            dt=t2
            l=100
-        else if ((t1>0.0_dp) .and. (dt>t1) ) then
+        else if ((t1>0.0_dp) .and. (t2<0.0_dp) .and. (dt>t1) ) then
            dt=t1
+           l=100
+        else if ((t1>0.0_dp) .and. (t2>0.0_dp) .and. (t1<t2) .and. (dt>t1)) then
+           dt=t1
+           l=100
+        else if ((t1>0.0_dp) .and. (t2>0.0_dp) .and. (t1>t2) .and. (dt>t2)) then
+           dt=t2
            l=100
         end if
             
@@ -182,11 +169,17 @@ contains
             d=(a(i+1)-a(i))/2
             t1=(-b-sqrt(b**2-4*d*c))/2/d
             t2=(-b+sqrt(b**2-4*d*c))/2/d
-            if ((t1<0.0_dp) .and. (t2>0.0_dp) .and. (dt>t2) ) then
+            if ((t1<0.0_dp) .and. (t2>0.0_dp) .and. (dt>t2)) then
                dt=t2
                l=i
-            else if ((t1>0.0_dp) .and. (dt>t1)) then
+            else if ((t1>0.0_dp) .and. (t2<0.0_dp) .and. (dt>t1) ) then
                dt=t1
+               l=i
+            else if ((t1>0.0_dp) .and. (t2>0.0_dp) .and. (t1<t2) .and. (dt>t1)) then
+               dt=t1
+               l=i
+            else if ((t1>0.0_dp) .and. (t2>0.0_dp) .and. (t1>t2) .and. (dt>t2)) then
+               dt=t2
                l=i
             end if
         enddo
