@@ -98,7 +98,7 @@ do j=1,10000
     if (l==0) then
         v(1)=-v(1) !ezkerrako paretaren aurkako talka
     else if (l==100) then
-        v(100)=-V(100) !eskuineko paretaren aurkako talka
+        v(100)=-v(100) !eskuineko paretaren aurkako talka
     else !gurutzatzea
         m=x(l)
         x(l)=x(l+1)
