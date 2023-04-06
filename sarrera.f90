@@ -53,12 +53,12 @@ r=2*r-1 ! r->(-1,1)
 
 w=sqrt(sum(r*r))
 
-v=r*vm/w/10 !100 elementuko abiaduren lista bat
+v=r*vm/w*10 !100 elementuko abiaduren lista bat
 
 !------------------------------------------------------------------------------>
 !Txekeoa::
 
-write(unit=*, fmt=*) sqrt((U0-V0)/50),"=", sqrt(sum(v*v))
+write(unit=*, fmt=*) sqrt((U0-V0)/50),"=", sqrt(sum(v*v))/100
 
 !------------------------------------------------------------------------------>
 
@@ -126,7 +126,7 @@ do j=1,10000
     enddo
     enddo
     V0=V0/2
-    write(unit=*, fmt=*) sqrt((U0-V0)/50),"=", 100*sqrt(sum(v*v))
+    write(unit=*, fmt=*) sqrt((U0-V0)/50),"=", sqrt(sum(v*v))/100
     
     !----------------------------------------------------
     
