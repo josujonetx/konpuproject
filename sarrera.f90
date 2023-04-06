@@ -42,11 +42,13 @@ end do potentziala
 
 vm=sqrt((U0-V0)/50)
 
-call random_number(r) !abiaduren aleatoriotasuna bermatzeko
+call random_number(r) !abiaduren aleatoriotasuna bermatzeko r-[0,1)
+
+r=2*r-1 ! r
 
 w=sqrt(sum(r*r))
 
-v=r*vm/w !100 elementuko abiaduren lista bat
+v=r*vm/w/10 !100 elementuko abiaduren lista bat
 
 !------------------------------------------------------------------------------>
 !Txekeoa::
@@ -60,8 +62,8 @@ do i=1,99
     do j=i+1,100
         if (x(i)>x(j)) then
             m=x(i)
-            x(i)=v(j)
-            v(j)=m
+            x(i)=x(j)
+            x(j)=m
             if (j<=50) then
                 c(i)=1   !kargen balioa ordena aldatzean ez baitauzkagu hasierako 50na + eta  - 
             else
