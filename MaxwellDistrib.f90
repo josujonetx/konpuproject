@@ -123,11 +123,11 @@ do j=1,10000
     
     t=t+dt
     do i=1,n-1
-      do j=i+1,n
-        if (v1(i)>v1(j)) then
+      do l=i+1,n
+        if (v1(i)>v1(l)) then
             m=v1(i)
-            v1(i)=v1(j)
-            v1(j)=m
+            v1(i)=v1(l)
+            v1(l)=m
          end if
        end do
      end do
@@ -135,11 +135,11 @@ do j=1,10000
     d=max(v1)-min(v1)
     do i=1,100
       dv=min(v1)+d/99*i
-      do i=sum(k),n
-        if v(i)>dv then
+      do l=sum(k),n
+        if v(l)>dv then
           exit
         end if
-        k(i)=k(i)+1
+        k(l)=k(l)+1
       enddo
       write(unit=111, fmt=*) t, min(v1)+d/99*(i+0.5) ,k(i)/n
     enddo
