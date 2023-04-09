@@ -23,6 +23,8 @@ U0=10.0_dp
 potentziala: do
 !Potentzialaren kalkuloa:
 
+
+call random_seed()
 call random_number(x) !100 posizio aleaorio [0,1)
 
 do i=1,n/2 !kargen balioak 1/-1
