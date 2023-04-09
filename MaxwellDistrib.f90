@@ -2,13 +2,15 @@ program maxwell
 
 use tipoak
 
-real(kind=dp), dimension(:), allocatable:: x, r, v, a, v1 !n partikula izango direlako 
+real(kind=dp), dimension(:), allocatable:: x, r, v, a !n partikula izango direlako 
 integer, dimension(:), allocatable:: c !kargen balioak
-integer:: i, j,l,n
-Real(kind=dp):: V0,U0,vm,w, dt, m,t, dv,d
-integer, dimension(100):: k
+integer:: i, j,l,n,o,p
+Real(kind=dp):: V0,U0,vm,w, dt, m,t, vmax, vmin, d, v1max, v1min, dv
+integer, dimension(:), allocatable:: k
 
 open(unit=111, file="v.dat", status="replace", action="write")
+open(unit=112, file="max.dat", status="replace", action="write")
+
 
 n=100 !pariikula kopurua
 
@@ -20,6 +22,14 @@ allocate(c(n))
 
 !sistemaren energia
 U0=10.0_dp
+
+o=40
+allocate(k(o))
+do i=1,o
+   k(i)=0
+enddo
+
+do p=1,5000
 
 potentziala: do
 !Potentzialaren kalkuloa:
@@ -118,31 +128,40 @@ do j=1,10000
         c(l)=c(l+1)
         c(l+1)=m
     end if
-    
-    v1=v
-    
     t=t+dt
-    do i=1,n-1
+  enddo
+  
+ do i=1,n-1
       do l=i+1,n
-        if (v1(i)>v1(l)) then
-            m=v1(i)
-            v1(i)=v1(l)
-            v1(l)=m
+        if (v(i)>v(l)) then
+            m=v(i)
+            v(i)=v(l)
+            v(l)=m
          end if
        end do
      end do
-    k=(/(0, i=1,100)/)
-    d=max(v1)-min(v1)
-    do i=1,100
-      dv=min(v1)+d/99*i
-      do l=sum(k),n
-        if v(l)>dv then
-          exit
+      if (p==1) then
+          v1max=v(n)+0.2
+          v1min=v(1)-0.2
+    end if
+    d=v1max-v1min
+    do i=1,o
+      vmax=v1min+d/o*i
+      vmin=v1min+d/o*(i-1)
+      do l=1,n
+        if ((vmin<=v(l)) .and. (v(l)<vmax)) then
+          k(i)=k(i)+1
         end if
-        k(l)=k(l)+1
       enddo
-      write(unit=111, fmt=*) t, min(v1)+d/99*(i+0.5) ,k(i)/n
     enddo
+    write(unit=*, fmt=*) sum(k)
+enddo
+do i=1,o
+        write(unit=111, fmt=*) v1min+d/o*(i-0.5), real(k(i))/n*o/5000/d
+enddo
+do i=1,1000
+        dv=v1min+d/1000*(i-0.5)
+        write(unit=112, fmt=*) dv, 1.0/sqrt(2*acos(-1.0)*vm**2)*Exp(-dv**2/2/vm**2)
 enddo
 
 contains
