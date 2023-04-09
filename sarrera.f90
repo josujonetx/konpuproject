@@ -2,12 +2,14 @@ program sarrera
 
 use tipoak
 
-real(kind=dp), dimension(:), allocatable:: x, r, v, a !100 partikula izango direlako 
+real(kind=dp), dimension(:), allocatable:: x, r, v, a,T1, K1, V1, U1 !100 partikula izango direlako 
 integer, dimension(:), allocatable:: c !kargen balioak
-integer:: i, j,l,k,n
+integer:: i, j,l,k,n,o,p
 Real(kind=dp):: V0,U0,vm,w, dt, m,t
 
 open(unit=111, file="K.dat", status="replace", action="write")
+open(unit=112, file="V.dat", status="replace", action="write")
+open(unit=113, file="U.dat", status="replace", action="write")
 
 n=100 !pariikula kopurua
 
@@ -17,9 +19,17 @@ allocate(v(n))
 allocate(a(n))
 allocate(c(n))
 
+o=100 !Hasierako egoeren bataz bestekoa
+
+allocate(V1(10000))
+allocate(K1(10000))
+allocate(U1(10000))
+
 !sistemaren energia
 U0=10.0_dp
 
+
+do p=1,o
 potentziala: do
 !Potentzialaren kalkuloa:
 
@@ -128,10 +138,16 @@ do j=1,10000
              V0=V0-c(i)*c(k)*abs(x(i)-x(k))
         enddo
     enddo
-
-    write(unit=111, fmt=*) t, sum(v*v)/2, V0/2,  sum(v*v)/2+V0/2
+    if (p==1) then
+        T1(j)=T1(j)
+    end if
+    K1(j)=Ksum(v*v)/2
+    V1(j)=V0/2
+    U1(j)=U1(j)+sum(v*v)/2+V0/2
 enddo
-
+do j=1,10000
+    write(unit=111, fmt=*) T1(j),K1(j)/10000 , V1(j)/10000,  U1(j)/10000
+enddo
 contains
     subroutine karak(x,v,a,dt,l) !Denbora karakterestikoa
 
