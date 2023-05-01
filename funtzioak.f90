@@ -31,6 +31,9 @@ use tipoak
         enddo
         
         do i=1,size(p)/6
+                ax(i)=-Deribatux(x(i),y(i),z(i), Potentziala)
+                ay(i)=-Deribatuy(x(i),y(i),z(i), Potentziala)
+                az(i)=-Deribatuz(x(i),y(i),z(i), Potentziala)
                 do j=1, size(p)/6
                      if (i/=j) then
                              ax(i)=ax(i)+c(i)*c(j)*(x(i)-x(j))/sqrt((x(i)-x(j))**2+(y(i)-y(j))**2+(z(i)-z(j))**2))**3
@@ -43,9 +46,9 @@ use tipoak
                 yprima(6*i-5)=vx(i)
                 yprima(6*i-4)=vy(i)
                 yprima(6*i-3)=vz(i)
-                yprima(6*i-2)=ax(i)-Deribatux(x(i),y(i),z(i), Potentziala)
-                yprima(6*i-1)=ay(i)-Deribatuy(x(i),y(i),z(i), Potentziala)
-                yprima(6*i)=az(i)-Deribatuz(x(i),y(i),z(i), Potentziala)
+                yprima(6*i-2)=ax(i)
+                yprima(6*i-1)=ay(i)
+                yprima(6*i)=az(i)
         enddo
         end function Plasma
         
@@ -53,7 +56,7 @@ use tipoak
             real(kind=dp), intent(in)::x,y,z
             real(kind=dp):: Potentziala
         
-            Potentziala=Sqrt[(6 - Sqrt[x^2 + y^2])^2 + z^2] !Donut bat
+            Potentziala=Sqrt[(6 - Sqrt[x**2 + y**2])**2 + z**2] !Donut bat
         
         end function Potentziala
         
