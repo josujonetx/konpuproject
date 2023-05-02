@@ -55,3 +55,7 @@ enddo
 do l=1,m
    write(unit=11, fmt=*) l,km(l), vm(l), km(l)+vm(l)
 enddo
+
+close(11)
+
+end program EnergiaZinetikoa
