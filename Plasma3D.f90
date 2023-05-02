@@ -1,23 +1,22 @@
 module Plasma3D
 
 public:: Oreka
+integer, parameter, public  :: m=1000 !Debora pausu kop.
 
 
 contains
-    function Oreka(n) 
+    function Oreka(n) !partikula kop. 
         use tipoak
         use funtzioak
         use rk4
-        
-        real(kind=dp), intent(in):: n
+
+        integer, intent(in):: n
         integer             :: i,j, l,o
         real(kind=dp)       :: t, h, U0,V0,vm,w
-        real(kind=dp), dimension(n)  :: x,y,z,c,r, theta, phy,vx,vy,vz
+        real(kind=dp), dimension(n)  :: x,y,z,c,r, theta, phy,v, vx,vy,vz
         real(kind=dp), dimension(6*n) :: p
-        real(kind=dp), dimension(1000,6*n):: Oreka
-        integer, parameter  :: m=1000
-        real(kind=dp), parameter :: ta=0.0_dp, tb=100.0_dp
-
+        real(kind=dp), dimension(m,6*n):: Oreka
+        real(kind=dp), parameter :: ta=0.0_dp, tb=0.001_dp
 
         h=(tb-ta)/m
 
@@ -26,12 +25,16 @@ contains
         !sistemaren energia
         U0=10.0_dp
 
-        potentziala: do
+        do
+
+
         !Potentzialaren kalkuloa:
 
 
         call random_seed()
-        call random_number(x,y,z) !50 posizio aleaorio [0,1)
+        call random_number(x)
+        call random_number(y)
+        call random_number(z) !50 posizio aleaorio [0,1)
 
         do i=1,n/2 !kargen balioak 1/-1
             c(i)=1
@@ -56,17 +59,20 @@ contains
 
         !potentzialak ezin duenez sistemaren energia gainditu prozesua errepikatuko da:
 
-        if (V0<U0) then
+        if (abs(V0)<U0) then
             exit potentziala
         end if
 
         end do potentziala
         ! Partiukula ez erlatibistak (E=1/2·m·v^2) eta eta denek m=1 onartuko dugu. 
         ! Hortaz abiaduraren bataz besteko kuadratikoa-ren erroa:
+        
+        
+          vm=sqrt((U0-V0)/n*2)
 
-        vm=sqrt((U0-V0)/n*2)
-
-        call random_number(r,theta,phy) !abiaduren aleatoriotasuna bermatzeko r-[0,1)
+        call random_number(r)
+        call random_number(theta)
+        call random_number(phy) !abiaduren aleatoriotasuna bermatzeko r-[0,1)
 
         r=2*r-1 ! r->(-1,1)
         theta=theta*acos(-1.0)*2 ! theta->[0,2pi)
@@ -74,7 +80,10 @@ contains
 
         w=sqrt(sum(r*r))
 
-        v=r*vm/w !50 elementuko abiaduren lista bat
+        v=sqrt(real(n,dp))*r*vm/w !50 elementuko abiaduren lista bat
+
+
+        write(unit=*, fmt=*) sum(v*v)/2
 
         vx=v*sin(phy)*cos(theta)
         vy=v*sin(phy)*sin(theta)
@@ -91,8 +100,11 @@ contains
 
         do i=1,m
                 call rk4_paso_dp(t,p, Plasma ,h)
-                (Oreka(i,j)=p(j), j=1,6*n)
+                do j=1,6*n
+                        Oreka(i,j)=p(j)
+                enddo
         end do
 
         end function Oreka
 end module Plasma3D
+        
