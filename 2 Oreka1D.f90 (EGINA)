@@ -1,4 +1,4 @@
-module sarrera
+module oreka1
 
         use tipoak
         public:: Plasma1D, karak
@@ -225,5 +225,5 @@ subroutine karak(x,v,a,dt,l) !Denbora karakterestikoa
         enddo
     end subroutine karak
 
-end module  sarrera
+end module oreka1
 
