@@ -1,7 +1,7 @@
 program EnergiaZinetikoa
 
 use tipoak
-use sarrera
+use oreka1
 use m_spline_dp
 
 integer, parameter:: m=100  !m=Errepikapen kop., n=Partikula kop., o=Iterazio kop.
