@@ -1,61 +1,84 @@
 program EnergiaZinetikoa
 
 use tipoak
-use Plasma3D
+use sarrera
+use m_spline_dp
 
-real(kind=dp), dimension(100,m):: K,V0
-integer, parameter:: n=50 !Partikula kop.
-real(kind=dp), dimension(m, 2*n)::p
+integer, parameter:: m=100  !m=Errepikapen kop., n=Partikula kop., o=Iterazio kop.
+real(kind=dp), dimension(m,o):: K,V0,T
+real(kind=dp), dimension(o, n+1,4)::p
 real(kind=dp), dimension(n):: x,v
-real(kind=dp), dimension(m):: km,vm
-integer:: i,j,l,o
+real(kind=dp), dimension(o):: km=0.0_dp,vm=0.0_dp, vint, y
+integer:: i,j,l,q
+integer, dimension(n)::c
+real(kind=dp):: t1, tmin, tmax
 
-open(unit=11, file="EnergiaZinetikoa1D.dat", status="replace", action="write")
+open(unit=111, file="K1D.dat", status="replace",action="write" )
+open(unit=112, file="V01D.dat", status="replace",action="write" )
+open(unit=113, file="U1D.dat", status="replace",action="write" )
 
- do i=1,n/2 !kargen balioak 1/-1
-            c(i)=1
-            c(i+n/2)=-1
- enddo
-
- c(n)=-1 !partikula kopurua bakoitia balitz
-
-
-
-do i=1,100
-   p=Plasma1D(n)
-   do l=1,m
+do i=1,m
+   write(unit=*, fmt=*) i
+    call Plasma1D(p)
+   do l=1,o
+      T(i,l)=p(l,1,1)
       do j=1,n
-         x(j)=p(l,2*j-1)
-         v(j)=p(l,2*j)
+         x(j)=p(l,j+1,1)
+         v(j)=p(l,j+1,2)
+         c(j)=p(l,j+1,4)
       enddo
       K(i,l)=sum(v*v)/2
       V0(i,l)=0.0_dp
       do j=1,n
-        do o=1,n
-            if (o/=j) then
-              V0(i,l)=V0(i,l)-c(o)*c(j)/((x(o)-x(j))**2
-            end if
-         enddo
+        do q=1,n
+         V0(i,l)=V0(i,l)-c(q)*c(j)*abs(x(q)-x(j))
+        enddo
       enddo
+      V0(i,l)=V0(i,l)/2
+      if (V0(i,l)>10.0_dp) then
+              write(unit=*, fmt=*) "Daturenbat gaizki doa"
+      end if
    enddo
 enddo
 
-do j=1,m
-     km(j)=0.0_dp
-     vm(j)=0.0_dp
+tmax=T(1,o)
+tmin=0.0_dp
+
+do i=1,m   !Spline bidezko extrapolazioa ekiditen da honela datuak dauzkagun tmax-etatik minimoa hartuz
+        if (tmax>T(i,o)) then
+                 tmax=T(i,o)
+        end if
 enddo
 
-do i=1,100
-do j=1,m
-   km(j)=km(j)+K(i,j)/100
-   vm(j)=vm(j)+V0(i,j)/100
-enddo
+do i=1,m !Interpolazioa 'Datuak denbora berdinetan ez dauzkagulako egiten dugu'
+        call  spline ( T(i,:), V0(i,:),o,y)
+        do j=0,o-1
+                t1=tmin+(tmax-tmin)/(o-1)*j
+                call  splint (T(i,:),V0(i,:),y,o,t1,vint(j+1))
+        enddo
+
+        vm=vm+vint/m
+
+        call  spline ( T(i,:), K(i,:),o,y)
+        do j=0,o-1
+                t1=tmin+(tmax-tmin)/(o-1)*j
+                call  splint (T(i,:),K(i,:),y,o,t1,vint(j+1))
+        enddo
+
+        km=km+vint/m
 enddo
 
-do l=1,m
-   write(unit=11, fmt=*) l,km(l), vm(l), km(l)+vm(l)
+
+do l=1,o-1
+   write(unit=111, fmt=*) tmin+(tmax-tmin)/o*l,km(l)
+   write(unit=112, fmt=*) tmin+(tmax-tmin)/o*l,vm(l)
+   write(unit=113, fmt=*) tmin+(tmax-tmin)/o*l,km(l)+vm(l)
 enddo
 
-close(11)
+close(111)
+close(112)
+close(113)
+
+
 
 end program EnergiaZinetikoa
