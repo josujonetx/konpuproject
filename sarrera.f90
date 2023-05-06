@@ -6,7 +6,7 @@ module sarrera
 
         contains
 
-                subroutine alasma1D(p)
+                subroutine Plasma1D(p)
 
                         use tipoak
                         
